@@ -1,32 +1,38 @@
 {
-  "name": "freeflow-typescript-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mathiusjohnson/freeflow-typescript-api.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mathiusjohnson/freeflow-typescript-api/issues"
-  },
-  "homepage": "https://github.com/mathiusjohnson/freeflow-typescript-api#readme",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.8",
-    "@types/express": "^4.17.8",
-    "nodemon": "^2.0.6",
-    "ts-node": "^9.0.0",
-    "typescript": "^4.0.5"
-  }
+	"name": "freeflow-typescript-api",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"devStart": "nodemon ./src/index.ts",
+		"start": "node ./build/index.js",
+		"build": "tsc"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/mathiusjohnson/freeflow-typescript-api.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/mathiusjohnson/freeflow-typescript-api/issues"
+	},
+	"homepage": "https://github.com/mathiusjohnson/freeflow-typescript-api#readme",
+	"dependencies": {
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"pg": "^8.4.2"
+	},
+	"devDependencies": {
+		"@types/cors": "^2.8.8",
+		"@types/express": "^4.17.8",
+		"@types/pg": "^7.14.6",
+		"@types/resolve": "^1.17.1",
+		"nodemon": "^2.0.6",
+		"ts-node": "^9.0.0",
+		"typescript": "^4.0.5"
+	}
 }
