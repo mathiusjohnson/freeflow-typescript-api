@@ -1,5 +1,4 @@
 import pg from 'pg';
-import resolve from 'resolve';
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -32,7 +31,7 @@ export const getUserById = (id: Number) => {
   `,
 			[id]
 		)
-		.then(resolve => console.log(resolve))
+		.then(resolve => resolve.rows[0])
 		.catch(error => console.log(error));
 };
 
