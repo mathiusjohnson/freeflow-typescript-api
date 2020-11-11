@@ -1,4 +1,5 @@
 import pg from 'pg';
+import resolve from 'resolve';
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -9,9 +10,9 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
-pool.connect();
+// pool.connect();
 
-const getUsers = () => {
+export const getUsers = () => {
 	return pool
 		.query(
 			`
@@ -22,7 +23,20 @@ const getUsers = () => {
 		.catch(error => console.log(error));
 };
 
-const getPostingsByUsers = (option: Number) => {
+export const getUserById = (id: Number) => {
+	return pool
+		.query(
+			`
+  SELECT * FROM users
+    WHERE id = $1
+  `,
+			[id]
+		)
+		.then(resolve => console.log(resolve))
+		.catch(error => console.log(error));
+};
+
+export const getPostingsByUsers = (option: Number) => {
 	return pool
 		.query(
 			`
@@ -35,5 +49,5 @@ const getPostingsByUsers = (option: Number) => {
 		.catch(error => console.log(error));
 };
 
-module.exports = { getUsers, getPostingsByUsers };
-// module.exports = getPostingsByUsers;
+// exports = { getUsers };
+// module.exports = { getUsers, getPostingsByUsers };

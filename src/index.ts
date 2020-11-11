@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import resolve from 'resolve';
+import bodyparser from 'body-parser';
+import { userRouter } from './routers/users';
 
 require('dotenv').config();
 
@@ -9,7 +11,9 @@ const PORT = 8000;
 
 // Router
 const apiRouter = express.Router();
+app.use(bodyparser.json());
 app.use('/api', apiRouter);
+app.use('/users', userRouter);
 
 apiRouter.get('/users', (req: Request, res: Response) => {
 	getUsers()
