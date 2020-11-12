@@ -9,6 +9,52 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
+export const giveKarma = (commentId: Number, userId: Number) => {
+	const queryString = `
+	INSERT INTO karmas (giver_id, comment_id)
+	VALUES ($1, $2)
+	RETURNING *;
+	`;
+	return pool
+		.query(queryString, [userId, commentId])
+		.then(resolve => {
+			return resolve.rows[0];
+		})
+		.catch(error => console.log(error));
+};
+
+export const getKarmaCountByComment = (id: Number) => {
+	const queryString = `
+	SELECT COUNT(*)
+		FROM karmas
+		WHERE comment_id = $1
+	`;
+	return pool
+		.query(queryString, [id])
+		.then(resolve => {
+			return resolve.rows[0];
+		})
+		.catch(error => console.log(error));
+};
+
+export const getKarmaCountByUser = (id: Number) => {
+	const queryString = `
+	SELECT COUNT(*)
+		FROM karmas
+		JOIN comments
+			ON comment_id = comments.id
+		JOIN users
+			ON commenter_id = users.id
+			WHERE users.id = $1
+	`;
+	return pool
+		.query(queryString, [id])
+		.then(resolve => {
+			return resolve.rows[0];
+		})
+		.catch(error => console.log(error));
+};
+
 export const addLike = (postingId: Number, userId: Number) => {
 	const queryString = `
 	INSERT INTO likes (liker_id, posting_id)
