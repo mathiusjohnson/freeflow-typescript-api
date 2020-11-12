@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import resolve from 'resolve';
 
 const router = express.Router();
 
