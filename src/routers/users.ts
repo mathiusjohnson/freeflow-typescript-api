@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import resolve from 'resolve';
 
 const router = express.Router();
 
@@ -28,6 +29,14 @@ module.exports = (queryFunctions: any) => {
 			.getPostingsByUserId(userId)
 			.then((resolve: object) => res.send(resolve))
 			.catch((error: any) => console.log(error));
+	});
+
+	router.post('/register', (req: Request, res: Response) => {
+		const userInfo = req.body;
+		queryFunctions
+			.register(userInfo)
+			.then((resolve: object) => res.send(resolve))
+			.catch((error: string) => console.log(error));
 	});
 
 	router.post('/', (req: Request, res: Response) => {
