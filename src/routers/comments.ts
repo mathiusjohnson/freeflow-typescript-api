@@ -31,18 +31,20 @@ module.exports = (queryFunction: any) => {
 
 	router.patch('/:commentId', (req: Request, res: Response) => {
 		const commentId = Number(req.params.commentId);
+		const commenterId = req.body.userId;
 		const newContent = req.body.content;
 		queryFunction
-			.editComment(commentId, newContent)
+			.editComment(commentId, commenterId, newContent)
 			.then((resolve: Object) => res.send(resolve))
 			.catch((error: String) => console.log(error));
 	});
 
 	router.delete('/:commentId', (req: Request, res: Response) => {
-		const commentId = req.params.id;
+		const commentId = Number(req.params.commentId);
+		const commenterId = req.body.userId;
 		queryFunction
-			.deleteComment(commentId)
-			.then((resolve: Array<Object>) => res.send(resolve))
+			.deleteComment(commentId, commenterId)
+			.then((resolve: Object) => res.send(resolve))
 			.catch((error: String) => console.log(error));
 	});
 

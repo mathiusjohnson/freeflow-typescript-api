@@ -9,14 +9,29 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
-export const editComment = (commentId: Number, content: String) => {
-	console.log(commentId, content);
+export const deleteComment = (commentId: Number, commenterId: Number) => {
 	const queryString = `
-	UPDATE comments SET "content" = $1 where id = $2
+	UPDATE comments SET "deleted" = 'true' where id = $1 AND commenter_id = $2
 	RETURNING *
 	`;
 	return pool
-		.query(queryString, [content, commentId])
+		.query(queryString, [commentId, commenterId])
+		.then(resolve => resolve.rows[0])
+		.catch(error => console.log(error));
+};
+
+export const editComment = (
+	commentId: Number,
+	commenterId: Number,
+	content: String
+) => {
+	console.log(commentId, content);
+	const queryString = `
+	UPDATE comments SET "content" = $1 where id = $2 AND commenter_id = $3
+	RETURNING *
+	`;
+	return pool
+		.query(queryString, [content, commentId, commenterId])
 		.then(resolve => resolve.rows[0])
 		.catch(error => console.log(error));
 };
