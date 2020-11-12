@@ -9,6 +9,34 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
+export const addLike = (postingId: Number, userId: Number) => {
+	const queryString = `
+	INSERT INTO likes (liker_id, posting_id)
+	VALUES ($1, $2)
+	RETURNING *;
+	`;
+	return pool
+		.query(queryString, [userId, postingId])
+		.then(resolve => {
+			return resolve.rows[0];
+		})
+		.catch(error => console.log(error));
+};
+
+export const getLikeCount = (id: Number) => {
+	const queryString = `
+	SELECT COUNT(*)
+		FROM likes
+		WHERE posting_id = $1
+	`;
+	return pool
+		.query(queryString, [id])
+		.then(resolve => {
+			return resolve.rows[0];
+		})
+		.catch(error => console.log(error));
+};
+
 export const editUserById = (userInfo: Object, userId: Number) => {
 	const updateFields = Object.keys(userInfo);
 	const updateValues = Object.values(userInfo);

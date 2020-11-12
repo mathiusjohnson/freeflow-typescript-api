@@ -11,12 +11,13 @@ const PORT = 8000;
 
 //Require Routers
 const userRouter = require('./routers/users');
-
+const likesRouter = require('./routers/likes');
 // Router
 
 app.use(bodyparser.json());
 
 app.use('/api/users', userRouter(queryFunctions));
+app.use('/api/likes', likesRouter(queryFunctions));
 
 app.get('/', (req: Request, res: Response) =>
 	res.send('Express TypeScript Server')
