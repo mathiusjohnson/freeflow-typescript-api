@@ -32,6 +32,7 @@ CREATE TABLE "comments" (
   "commenter_id" int,
   "posting_id" int,
   "content" text,
+  "deleted" boolean DEFAULT false,
   "created_at" TIMESTAMP DEFAULT Now()
 );
 
