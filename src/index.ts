@@ -11,15 +11,17 @@ const PORT = 8000;
 
 //Require Routers
 const userRouter = require('./routers/users');
-const likesRouter = require('./routers/likes');
-const karmasRouter = require('./routers/karmas');
+const likeRouter = require('./routers/likes');
+const karmaRouter = require('./routers/karmas');
+const commentRouter = require('./routers/comments');
 // Router
 
 app.use(bodyparser.json());
 
 app.use('/api/users', userRouter(queryFunctions));
-app.use('/api/likes', likesRouter(queryFunctions));
-app.use('/api/karmas', karmasRouter(queryFunctions));
+app.use('/api/likes', likeRouter(queryFunctions));
+app.use('/api/karmas', karmaRouter(queryFunctions));
+app.use('/api/comments', commentRouter(queryFunctions));
 
 app.get('/', (req: Request, res: Response) =>
 	res.send('Express TypeScript Server')

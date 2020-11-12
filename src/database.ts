@@ -9,6 +9,60 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
+export const editComment = (commentId: Number, content: String) => {
+	console.log(commentId, content);
+	const queryString = `
+	UPDATE comments SET "content" = $1 where id = $2
+	RETURNING *
+	`;
+	return pool
+		.query(queryString, [content, commentId])
+		.then(resolve => resolve.rows[0])
+		.catch(error => console.log(error));
+};
+
+export const getCommentById = (commentId: Number) => {
+	const queryString = `
+	SELECT *
+	FROM comments
+	WHERE id = $1
+	`;
+	return pool
+		.query(queryString, [commentId])
+		.then(resolve => resolve.rows[0])
+		.catch(error => console.log(error));
+};
+
+export const addComment = (
+	postingId: Number,
+	userId: Number,
+	content: String
+) => {
+	const queryString = `
+	INSERT INTO comments
+	(commenter_id, posting_id, content)
+	VALUES ($1, $2, $3)
+	RETURNING *;
+	`;
+	return pool
+		.query(queryString, [userId, postingId, content])
+		.then(resolve => resolve.rows[0])
+		.catch(error => console.log(error));
+};
+
+export const getCommentsByPosting = (postingId: Number) => {
+	const queryString = `
+	SELECT *
+		FROM comments
+		JOIN users ON commenter_id = users.id
+		WHERE posting_id = $1
+	`;
+	return pool
+		.query(queryString, [postingId])
+		.then(resolve => resolve.rows)
+		.catch(error => console.log(error));
+};
+
 export const giveKarma = (commentId: Number, userId: Number) => {
 	const queryString = `
 	INSERT INTO karmas (giver_id, comment_id)
