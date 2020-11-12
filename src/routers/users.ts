@@ -39,6 +39,15 @@ module.exports = (queryFunctions: any) => {
 			.catch((error: string) => console.log(error));
 	});
 
+	router.patch('/:id', (req: Request, res: Response) => {
+		const userId = req.params.id;
+		const userInfo = req.body;
+		queryFunctions
+			.editUserById(userInfo, userId)
+			.then((resolve: object) => res.send(resolve))
+			.catch((error: string) => console.log(error));
+	});
+
 	router.post('/', (req: Request, res: Response) => {
 		const { email, password } = req.body;
 		queryFunctions

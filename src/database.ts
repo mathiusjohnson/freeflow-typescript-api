@@ -9,6 +9,30 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
+export const editUserById = (userInfo: Object, userId: Number) => {
+	const updateFields = Object.keys(userInfo);
+	const updateValues = Object.values(userInfo);
+	let queryString = `
+	UPDATE users
+	SET
+	`;
+	// add `value = $index,` for each pair in userObj
+	updateFields.forEach((field, index) => {
+		queryString += `${field} = $${index + 1},`;
+	});
+	let queryParams = [...updateValues, userId];
+	let qString = queryString.slice(0, -1);
+	qString += ` WHERE id = $${queryParams.length}
+	RETURNING *;
+	`;
+	return pool
+		.query(qString, queryParams)
+		.then(resolve => {
+			return resolve.rows[0];
+		})
+		.catch(error => console.log(error));
+};
+
 export const register = (userInfo: Object) => {
 	const queryString = `
 	insert into users (first_name, last_name, email, password, avatar, location, description, active) values ($1, $2, $3, $4, $5, $6, $7, true)
