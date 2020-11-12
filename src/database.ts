@@ -9,7 +9,22 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
-// pool.connect();
+export const validateLogin = (email: string, password: string) => {
+	console.log('attemp login');
+	const queryString = `
+	SELECT * from users WHERE email = $1 AND password = $2
+	`;
+	console.log(`
+	SELECT * from users WHERE email = ${email} AND password = ${password}
+	`);
+	return pool
+		.query(queryString, [email, password])
+		.then(resolve => {
+			// console.log(resolve);
+			return resolve.rows[0];
+		})
+		.catch(error => console.log(error));
+};
 
 export const getUsers = () => {
 	return pool
@@ -35,7 +50,7 @@ export const getUserById = (id: Number) => {
 		.catch(error => console.log(error));
 };
 
-export const getPostingsByUsers = (option: Number) => {
+export const getPostingsByUserId = (option: Number) => {
 	return pool
 		.query(
 			`

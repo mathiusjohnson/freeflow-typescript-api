@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import resolve from 'resolve';
 import bodyparser from 'body-parser';
 // import { userRouter } from './routers/users';
 

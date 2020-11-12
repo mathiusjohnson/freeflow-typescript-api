@@ -4,15 +4,15 @@ const router = express.Router();
 
 // path api/users - return all users
 module.exports = (queryFunctions: any) => {
-	console.log('request gets here');
+	// get an array of all users
 	router.get('/', (req: Request, res: Response) => {
-		console.log('request gets here - /users');
 		queryFunctions
 			.getUsers()
 			.then((resolve: Array<object>) => res.send(resolve))
 			.catch((error: any) => console.log(error));
 	});
 
+	// get the user object by users.id
 	router.get('/:id', (req: Request, res: Response) => {
 		let userId = Number(req.params.id);
 		queryFunctions
@@ -20,5 +20,23 @@ module.exports = (queryFunctions: any) => {
 			.then((resolve: object) => res.send(resolve))
 			.catch((error: any) => console.log(error));
 	});
+
+	// get an array of postings by users.id
+	router.get('/:id/postings', (req: Request, res: Response) => {
+		let userId = Number(req.params.id);
+		queryFunctions
+			.getPostingsByUserId(userId)
+			.then((resolve: object) => res.send(resolve))
+			.catch((error: any) => console.log(error));
+	});
+
+	router.post('/', (req: Request, res: Response) => {
+		const { email, password } = req.body;
+		queryFunctions
+			.validateLogin(email, password)
+			.then((resolve: object) => res.send(resolve))
+			.catch((error: string) => console.log(error));
+	});
+
 	return router;
 };
