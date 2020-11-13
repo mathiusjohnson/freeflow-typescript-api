@@ -9,7 +9,46 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
-export const addPosting = (posting: Object) => {
+export const editPosting = (
+	postingId: Number,
+	posting: {
+		title?: string;
+		content?: string;
+		is_request?: boolean;
+		owner_id: number;
+	}
+) => {
+	const updateFields = Object.keys(posting);
+	const updateValues = Object.values(posting);
+	let queryString = `
+	UPDATE postings
+	SET
+	`;
+	// add `value = $index,` for each pair in userObj
+	updateFields.forEach((field, index) => {
+		queryString += `${field} = $${index + 1},`;
+	});
+	let queryParams = [...updateValues, postingId, posting.owner_id];
+	let qString = queryString.slice(0, -1);
+	qString += ` WHERE id = $${queryParams.length - 1} AND owner_id = $${
+		queryParams.length
+	}
+	RETURNING *;
+	`;
+	return pool
+		.query(qString, queryParams)
+		.then(resolve => {
+			return resolve.rows[0];
+		})
+		.catch(error => console.log(error));
+};
+
+export const addPosting = (posting: {
+	title: string;
+	content: string;
+	is_request: boolean;
+	owner_id: number;
+}) => {
 	const queryString = `
 	INSERT INTO postings
 	(title, content, is_request, owner_id)
