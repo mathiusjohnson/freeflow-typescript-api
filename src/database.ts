@@ -9,6 +9,20 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
+export const addPosting = (posting: Object) => {
+	const queryString = `
+	INSERT INTO postings
+	(title, content, is_request, owner_id)
+	VALUES ($1, $2, $3, $4)
+	RETURNING *
+	`;
+	const queryParams = Object.values(posting);
+	return pool
+		.query(queryString, queryParams)
+		.then(resolve => resolve.rows[0])
+		.catch(error => console.log(error));
+};
+
 export const getAllPostings = () => {
 	const queryString = `
 	SELECT *
