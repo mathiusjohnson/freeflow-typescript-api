@@ -59,7 +59,10 @@ module.exports = (queryFunctions: any) => {
 		const { email, password } = req.body;
 		queryFunctions
 			.validateLogin(email, password)
-			.then((resolve: object) => res.send(resolve))
+			.then((resolve: object) => {
+				console.log('login completed');
+				return res.send(resolve);
+			})
 			.catch((error: string) => console.log(error));
 	});
 
