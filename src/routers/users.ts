@@ -38,13 +38,12 @@ module.exports = (queryFunctions: any) => {
 				console.log(err);
 			} else {
 				userInfo.password = hash;
-				console.log(hash)
+				queryFunctions
+					.register(userInfo)
+					.then((resolve: object) => res.send(resolve))
+					.catch((error: string) => console.log(error));
 			}
 		});
-		queryFunctions
-			.register(userInfo)
-			.then((resolve: object) => res.send(resolve))
-			.catch((error: string) => console.log(error));
 	});
 
 	router.patch('/:id', (req: Request, res: Response) => {
