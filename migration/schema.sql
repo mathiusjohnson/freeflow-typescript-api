@@ -23,6 +23,7 @@ CREATE TABLE "postings" (
   "owner_id" int,
   "title" varchar,
   "content" text,
+  "deleted" boolean DEFAULT false,
   "is_request" boolean,
   "created_at" TIMESTAMP DEFAULT Now()
 );
