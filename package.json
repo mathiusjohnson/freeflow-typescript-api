@@ -13,7 +13,6 @@
 		"type": "git",
 		"url": "git+https://github.com/mathiusjohnson/freeflow-typescript-api.git"
 	},
-	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"bugs": {
