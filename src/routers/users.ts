@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
@@ -32,6 +33,14 @@ module.exports = (queryFunctions: any) => {
 
 	router.post('/register', (req: Request, res: Response) => {
 		const userInfo = req.body;
+		bcrypt.hash(userInfo.password, 10, (err: Error, hash: String) => {
+			if (err) {
+				console.log(err);
+			} else {
+				userInfo.password = hash;
+				console.log(hash)
+			}
+		});
 		queryFunctions
 			.register(userInfo)
 			.then((resolve: object) => res.send(resolve))

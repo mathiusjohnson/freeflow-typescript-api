@@ -22,6 +22,7 @@
 	},
 	"homepage": "https://github.com/mathiusjohnson/freeflow-typescript-api#readme",
 	"dependencies": {
+		"@types/bcrypt": "^3.0.0",
 		"@types/bcryptjs": "^2.4.2",
 		"bcrypt": "^5.0.0",
 		"body-parser": "^1.19.0",
