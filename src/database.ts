@@ -335,3 +335,20 @@ export const getPostingsByUserId = (option: Number) => {
 
 // exports = { getUsers };
 // module.exports = { getUsers, getPostingsByUsers };
+
+
+
+export const getConvo = (sender_id: Number, receiver_id: Number) => {
+	return pool
+	.query(
+		`
+		SELECT *
+		FROM messages
+		WHERE sender_id = $1 AND receiver_id = $2
+		;
+		`,
+		[sender_id, receiver_id]
+	)
+	.then(resolve => resolve.rows)
+	.catch(error => console.log(error));
+};

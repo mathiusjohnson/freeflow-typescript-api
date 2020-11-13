@@ -1,4 +1,4 @@
- INSERT INTO messages (sender_id, reciever_id, is_read, content) VALUES
+INSERT INTO messages (sender_id, reciever_id, is_read, content) VALUES
 (2, 3, true, 'Cake brownie jelly beans I love muffin. Jelly candy cheesecake cookie I love I love jelly cupcake gummi bears. Tart tart bonbon biscuit bear claw caramels. Powder tiramisu jelly sweet roll cookie biscuit gummi bears donut cookie.'),
 (4, 9, false, 'Candy canes biscuit halvah I love biscuit liquorice cheesecake. Chocolate bar cupcake tootsie roll danish carrot cake. Apple pie I love fruitcake chocolate jujubes.'),
 (3, 7, true, 'Pastry marzipan wafer jelly beans toffee icing oat cake. Icing donut cheesecake marzipan muffin. Cheesecake cake cake tootsie roll candy topping.'),
