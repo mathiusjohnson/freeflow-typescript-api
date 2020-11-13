@@ -2,6 +2,10 @@
 
 Run `npm install` after cloning the repo to your local host
 
+Copy .env.examples to .env
+
+- `cp .env.examples .env'
+
 To start dev server with nodemon
 
 - `npm run devStart`
