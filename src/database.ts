@@ -9,6 +9,28 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
+export const getAllPostings = () => {
+	const queryString = `
+	SELECT *
+	FROM postings WHERE "deleted" = false
+	`;
+	return pool
+		.query(queryString)
+		.then(resolve => resolve.rows)
+		.catch(error => console.log(error));
+};
+
+export const getPostingById = (postingId: Number) => {
+	const queryString = `
+	SELECT *
+	FROM postings WHERE "deleted" = false AND "id" = $1
+	`;
+	return pool
+		.query(queryString, [postingId])
+		.then(resolve => resolve.rows)
+		.catch(error => console.log(error));
+};
+
 export const deleteComment = (commentId: Number, commenterId: Number) => {
 	const queryString = `
 	UPDATE comments SET "deleted" = 'true' where id = $1 AND commenter_id = $2
