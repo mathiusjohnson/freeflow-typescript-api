@@ -18,7 +18,6 @@ To login PSQL
 
 - `\c sprint sprinter;` : You are now connected to database "sprint" as user "sprinter".
 
-To populate the database
+To populate/ reset the database
 
-1. Load schema `\i migration/schema.sql `
-2. Load seeds `\i migration/seeds_users.sql` & `\i migration/seeds_postings.sql`
+- `npm run db:reset`
