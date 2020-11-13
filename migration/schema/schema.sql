@@ -1,11 +1,9 @@
-DROP TABLE users IF EXISTS CASCADE;
-DROP TABLE postings IF EXISTS CASCADE;
-DROP TABLE comments IF EXISTS CASCADE;
-DROP TABLE messages_Stretch IF EXISTS CASCADE;
-DROP TABLE karmas IF EXISTS CASCADE;
-DROP TABLE likes IF EXISTS CASCADE;
-
-
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS postings CASCADE;
+DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS messages CASCADE;
+DROP TABLE IF EXISTS karmas CASCADE;
+DROP TABLE IF EXISTS likes CASCADE;
 
 CREATE TABLE "users" (
   "id" SERIAL PRIMARY KEY,
@@ -17,7 +15,7 @@ CREATE TABLE "users" (
   "location" varchar,
   "description" text,
   "active" boolean,
-  "created_at" timestamp
+  "created_at" TIMESTAMP DEFAULT Now()
 );
 
 CREATE TABLE "postings" (
@@ -25,8 +23,9 @@ CREATE TABLE "postings" (
   "owner_id" int,
   "title" varchar,
   "content" text,
+  "deleted" boolean DEFAULT false,
   "is_request" boolean,
-  "created_at" timestamp
+  "created_at" TIMESTAMP DEFAULT Now()
 );
 
 CREATE TABLE "comments" (
@@ -34,16 +33,17 @@ CREATE TABLE "comments" (
   "commenter_id" int,
   "posting_id" int,
   "content" text,
-  "created_at" timestamp
+  "deleted" boolean DEFAULT false,
+  "created_at" TIMESTAMP DEFAULT Now()
 );
 
-CREATE TABLE "messages_Stretch" (
+CREATE TABLE "messages" (
   "id" SERIAL PRIMARY KEY,
   "sender_id" int,
   "receiver_id" int,
   "is_read" boolean,
   "content" text,
-  "created_at" timestamp
+  "created_at" TIMESTAMP DEFAULT Now()
 );
 
 CREATE TABLE "karmas" (
@@ -58,15 +58,17 @@ CREATE TABLE "likes" (
   "posting_id" int
 );
 
+
+-- Add FOREIGN KEY
 ALTER TABLE "postings" ADD FOREIGN KEY ("owner_id") REFERENCES "users" ("id");
 
 ALTER TABLE "comments" ADD FOREIGN KEY ("commenter_id") REFERENCES "users" ("id");
 
 ALTER TABLE "comments" ADD FOREIGN KEY ("posting_id") REFERENCES "postings" ("id");
 
-ALTER TABLE "messages_Stretch" ADD FOREIGN KEY ("sender_id") REFERENCES "users" ("id");
+ALTER TABLE "messages" ADD FOREIGN KEY ("sender_id") REFERENCES "users" ("id");
 
-ALTER TABLE "messages_Stretch" ADD FOREIGN KEY ("receiver_id") REFERENCES "users" ("id");
+ALTER TABLE "messages" ADD FOREIGN KEY ("receiver_id") REFERENCES "users" ("id");
 
 ALTER TABLE "likes" ADD FOREIGN KEY ("liker_id") REFERENCES "users" ("id");
 
