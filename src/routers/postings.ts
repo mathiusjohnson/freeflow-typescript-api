@@ -37,10 +37,10 @@ module.exports = (queryFunctions: any) => {
 
 	router.delete('/:id', (req: Request, res: Response) => {
 		const postingId = Number(req.params.id);
-		const userId = req.body.userId;
+		const userId = req.body.owner_id;
 		queryFunctions
-			.editPosting(postingId, userId)
-			.then((resolve: Object) => res.send(resolve))
+			.deletePosting(postingId, userId)
+			.then((resolve: any) => res.send(resolve))
 			.catch((error: String) => console.log(error));
 	});
 

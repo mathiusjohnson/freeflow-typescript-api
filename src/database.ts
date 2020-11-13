@@ -9,6 +9,20 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
+export const deletePosting = (postingId: Number, userId: Number) => {
+	const queryString = `
+	UPDATE postings SET "deleted" = 'true' where id = $1 AND owner_id = $2
+	RETURNING *
+	`;
+	return pool
+		.query(queryString, [postingId, userId])
+		.then(resolve => {
+			console.log(resolve.rows);
+			return resolve.rows[0];
+		})
+		.catch(error => console.log(error));
+};
+
 export const editPosting = (
 	postingId: Number,
 	posting: {
