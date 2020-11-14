@@ -70,6 +70,8 @@ export const addPosting = (posting: {
 	RETURNING *
 	`;
 	const queryParams = Object.values(posting);
+	console.log("query params in db addposting: ", queryParams);
+	
 	return pool
 		.query(queryString, queryParams)
 		.then(resolve => resolve.rows[0])
