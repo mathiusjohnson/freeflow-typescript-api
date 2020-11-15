@@ -336,7 +336,19 @@ export const getPostingsByUserId = (option: Number) => {
 // exports = { getUsers };
 // module.exports = { getUsers, getPostingsByUsers };
 
-
+export const getAllMessages = () => {
+	return pool
+	.query(
+		`
+		SELECT *
+		FROM messages
+		;
+		`,
+		[]
+	)
+	.then(resolve => resolve.rows)
+	.catch(error => console.log(error));
+};
 
 export const getConvo = (sender_id: Number, receiver_id: Number) => {
 	return pool
