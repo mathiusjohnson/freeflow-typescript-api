@@ -41,7 +41,7 @@ CREATE TABLE "messages" (
   "id" SERIAL PRIMARY KEY,
   "sender_id" int,
   "receiver_id" int,
-  "is_read" boolean,
+  "is_read" boolean DEFAULT false,
   "content" text,
   "created_at" TIMESTAMP DEFAULT Now()
 );
