@@ -65,5 +65,5 @@ export interface QueryFunctions {
 	getUserById: (userId: Number) => Promise<Object>;
 	getPostingsByUserId: (userId: Number) => Promise<Array<Object>>;
 	getAllMessages: () => Promise<Array<Object>>;
-	getConvo: () => Promise<Array<Object>>;
+	getConvo: (sender_id: Number, receiver_id: Number) => Promise<Array<Object>>;
 }
