@@ -1,4 +1,5 @@
 export interface QueryFunctions {
+	// Postings
 	deletePosting: (postingId: Number, userId: Number) => Promise<Object>;
 	editPosting: (
 		postingId: Number,
@@ -17,11 +18,21 @@ export interface QueryFunctions {
 	}) => Promise<Object>;
 	getAllPostings: () => Promise<Array<Object>>;
 	getPostingById: (postingId: Number) => Promise<Object>;
-	deleteComment: () => Promise<Object>;
-	editComment: () => Promise<Object>;
-	getCommentById: () => Promise<Object>;
-	addComment: () => Promise<Object>;
-	getCommentsByPosting: () => Promise<Array<Object>>;
+
+	// Comments
+	deleteComment: (commentId: Number, commenterId: Number) => Promise<Object>;
+	editComment: (
+		commentId: Number,
+		commenterId: Number,
+		content: String
+	) => Promise<Object>;
+	getCommentById: (commentId: Number) => Promise<Object>;
+	addComment: (
+		postingId: Number,
+		userId: Number,
+		content: String
+	) => Promise<Object>;
+	getCommentsByPosting: (postingId: Number) => Promise<Array<Object>>;
 	giveKarma: () => Promise<Object>;
 	getKarmaCountByComment: () => Promise<Number>;
 	getKarmaCountByUser: () => Promise<Number>;

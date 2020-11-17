@@ -1,10 +1,11 @@
 import express, { Request, Response } from 'express';
+import { QueryFunctions } from '../customInterface';
 
 const router = express.Router();
 
-module.exports = (queryFunction: any) => {
+module.exports = (queryFunction: QueryFunctions) => {
 	router.get('/edit/:id', (req: Request, res: Response) => {
-		const commentId = req.params.id;
+		const commentId = Number(req.params.id);
 		queryFunction
 			.getCommentById(commentId)
 			.then((resolve: Object) => res.send(resolve))
@@ -12,7 +13,7 @@ module.exports = (queryFunction: any) => {
 	});
 
 	router.get('/:id', (req: Request, res: Response) => {
-		const postingId = req.params.id;
+		const postingId = Number(req.params.id);
 		queryFunction
 			.getCommentsByPosting(postingId)
 			.then((resolve: Array<Object>) => res.send(resolve))
@@ -20,7 +21,7 @@ module.exports = (queryFunction: any) => {
 	});
 
 	router.post('/:id', (req: Request, res: Response) => {
-		const postingId = req.params.id;
+		const postingId = Number(req.params.id);
 		const userId = req.body.userId;
 		const content = req.body.content;
 		queryFunction
