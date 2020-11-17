@@ -228,14 +228,14 @@ export const addLike = (postingId: Number, userId: Number) => {
 		.catch(error => console.log(error));
 };
 
-export const getLikeCount = (id: Number) => {
+export const getLikeCount = (postingId: Number) => {
 	const queryString = `
 	SELECT COUNT(*)
 		FROM likes
 		WHERE posting_id = $1
 	`;
 	return pool
-		.query(queryString, [id])
+		.query(queryString, [postingId])
 		.then(resolve => {
 			return resolve.rows[0].count;
 		})
