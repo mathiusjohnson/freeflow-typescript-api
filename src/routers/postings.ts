@@ -40,7 +40,7 @@ module.exports = (queryFunctions: any) => {
 		const userId = req.body.owner_id;
 		queryFunctions
 			.deletePosting(postingId, userId)
-			.then((resolve: any) => res.send(resolve))
+			.then((resolve: Object) => res.send(resolve))
 			.catch((error: String) => console.log(error));
 	});
 

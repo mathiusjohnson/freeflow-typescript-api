@@ -10,7 +10,7 @@ module.exports = (queryFunctions: any) => {
 		queryFunctions
 			.getUsers()
 			.then((resolve: Array<object>) => res.send(resolve))
-			.catch((error: any) => console.log(error));
+			.catch((error: string) => console.log(error));
 	});
 
 	// get the user object by users.id
@@ -19,7 +19,7 @@ module.exports = (queryFunctions: any) => {
 		queryFunctions
 			.getUserById(userId)
 			.then((resolve: object) => res.send(resolve))
-			.catch((error: any) => console.log(error));
+			.catch((error: string) => console.log(error));
 	});
 
 	// get an array of postings by users.id
@@ -28,7 +28,7 @@ module.exports = (queryFunctions: any) => {
 		queryFunctions
 			.getPostingsByUserId(userId)
 			.then((resolve: object) => res.send(resolve))
-			.catch((error: any) => console.log(error));
+			.catch((error: string) => console.log(error));
 	});
 
 	router.post('/register', (req: Request, res: Response) => {
