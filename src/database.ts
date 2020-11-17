@@ -191,7 +191,7 @@ export const getKarmaCountByComment = (id: Number) => {
 	return pool
 		.query(queryString, [id])
 		.then(resolve => {
-			return resolve.rows[0];
+			return resolve.rows[0].count;
 		})
 		.catch(error => console.log(error));
 };
@@ -209,7 +209,7 @@ export const getKarmaCountByUser = (id: Number) => {
 	return pool
 		.query(queryString, [id])
 		.then(resolve => {
-			return resolve.rows[0];
+			return resolve.rows[0].count;
 		})
 		.catch(error => console.log(error));
 };
@@ -237,7 +237,7 @@ export const getLikeCount = (id: Number) => {
 	return pool
 		.query(queryString, [id])
 		.then(resolve => {
-			return resolve.rows[0];
+			return resolve.rows[0].count;
 		})
 		.catch(error => console.log(error));
 };
