@@ -182,21 +182,21 @@ export const giveKarma = (commentId: Number, userId: Number) => {
 		.catch(error => console.log(error));
 };
 
-export const getKarmaCountByComment = (id: Number) => {
+export const getKarmaCountByComment = (commentId: Number) => {
 	const queryString = `
 	SELECT COUNT(*)
 		FROM karmas
 		WHERE comment_id = $1
 	`;
 	return pool
-		.query(queryString, [id])
+		.query(queryString, [commentId])
 		.then(resolve => {
 			return resolve.rows[0].count;
 		})
 		.catch(error => console.log(error));
 };
 
-export const getKarmaCountByUser = (id: Number) => {
+export const getKarmaCountByUser = (userId: Number) => {
 	const queryString = `
 	SELECT COUNT(*)
 		FROM karmas
@@ -207,7 +207,7 @@ export const getKarmaCountByUser = (id: Number) => {
 			WHERE users.id = $1
 	`;
 	return pool
-		.query(queryString, [id])
+		.query(queryString, [userId])
 		.then(resolve => {
 			return resolve.rows[0].count;
 		})
