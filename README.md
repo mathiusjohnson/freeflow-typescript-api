@@ -2,13 +2,17 @@
 
 Run `npm install` after cloning the repo to your local host
 
+Copy .env.examples to .env
+
+- `cp .env.examples .env'
+
 To start dev server with nodemon
 
 - `npm run devStart`
 
 To create role
 
-- `CREATE USER sprint WITH PASSWORD 'sprinter';`
+- `CREATE ROLE sprinter WITH LOGIN PASSWORD 'sprinter';`
 
 To create database
 
@@ -18,7 +22,6 @@ To login PSQL
 
 - `\c sprint sprinter;` : You are now connected to database "sprint" as user "sprinter".
 
-To populate the database
+To populate/ reset the database
 
-1. Load schema `\i migration/schema.sql `
-2. Load seeds `\i migration/seeds_users.sql` & `\i migration/seeds_postings.sql`
+- `npm run db:reset`

@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
@@ -32,10 +33,17 @@ module.exports = (queryFunctions: any) => {
 
 	router.post('/register', (req: Request, res: Response) => {
 		const userInfo = req.body;
-		queryFunctions
-			.register(userInfo)
-			.then((resolve: object) => res.send(resolve))
-			.catch((error: string) => console.log(error));
+		bcrypt.hash(userInfo.password, 10, (err: Error, hash: String) => {
+			if (err) {
+				console.log(err);
+			} else {
+				userInfo.password = hash;
+				queryFunctions
+					.register(userInfo)
+					.then((resolve: object) => res.send(resolve))
+					.catch((error: string) => console.log(error));
+			}
+		});
 	});
 
 	router.patch('/:id', (req: Request, res: Response) => {
@@ -51,7 +59,10 @@ module.exports = (queryFunctions: any) => {
 		const { email, password } = req.body;
 		queryFunctions
 			.validateLogin(email, password)
-			.then((resolve: object) => res.send(resolve))
+			.then((resolve: object) => {
+				console.log('login completed');
+				return res.send(resolve);
+			})
 			.catch((error: string) => console.log(error));
 	});
 

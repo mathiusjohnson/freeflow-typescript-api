@@ -3,6 +3,14 @@ import express, { Request, Response } from 'express';
 const router = express.Router();
 
 module.exports = (queryFunctions: any) => {
+	router.get('/', (req: Request, res: Response) => {
+		const postingId = Number(req.params.id);
+		queryFunctions
+			.getLikes()
+			.then((resolve: object) => res.send(resolve))
+			.catch((error: string) => console.log(error));
+	});
+
 	router.get('/:id', (req: Request, res: Response) => {
 		const postingId = Number(req.params.id);
 		queryFunctions

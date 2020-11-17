@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
-import bodyparser from 'body-parser';
 import cors from 'cors';
+import bodyparser from 'body-parser';
 import helmet from 'helmet';
 
 require('dotenv').config();
@@ -15,11 +15,11 @@ const likeRouter = require('./routers/likes');
 const karmaRouter = require('./routers/karmas');
 const commentRouter = require('./routers/comments');
 const postingRouter = require('./routers/postings');
-// Router
 
-app.use(cors());
 app.use(helmet());
+// middleware
 app.use(bodyparser.json());
+app.use(cors());
 
 app.use('/api/users', userRouter(queryFunctions));
 app.use('/api/likes', likeRouter(queryFunctions));

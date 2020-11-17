@@ -1,4 +1,5 @@
 import pg from 'pg';
+import bcrypt from 'bcrypt';
 
 const { Pool } = pg;
 const pool = new Pool({
@@ -229,11 +230,23 @@ export const addLike = (postingId: Number, userId: Number) => {
 		.catch(error => console.log(error));
 };
 
+export const getLikes = (id: Number) => {
+	const queryString = `
+	SELECT * FROM likes;
+	`;
+	return pool
+		.query(queryString)
+		.then(resolve => {
+			return resolve.rows;
+		})
+		.catch(error => console.log(error));
+};
+
 export const getLikeCount = (id: Number) => {
 	const queryString = `
 	SELECT COUNT(*)
 		FROM likes
-		WHERE posting_id = $1
+		WHERE posting_id = $1;
 	`;
 	return pool
 		.query(queryString, [id])
@@ -282,18 +295,17 @@ export const register = (userInfo: Object) => {
 };
 
 export const validateLogin = (email: string, password: string) => {
-	console.log('attemp login');
 	const queryString = `
-	SELECT * from users WHERE email = $1 AND password = $2
-	`;
-	console.log(`
-	SELECT * from users WHERE email = ${email} AND password = ${password}
-	`);
+	SELECT * from users WHERE email = $1`;
 	return pool
-		.query(queryString, [email, password])
+		.query(queryString, [email])
 		.then(resolve => {
-			// console.log(resolve);
-			return resolve.rows[0];
+			const userObj = resolve.rows[0];
+			return bcrypt.compare(password, userObj.password).then(result => {
+				if (result === true) {
+					return userObj;
+				}
+			});
 		})
 		.catch(error => console.log(error));
 };
