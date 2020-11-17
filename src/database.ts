@@ -95,7 +95,7 @@ export const getPostingById = (postingId: Number) => {
 	`;
 	return pool
 		.query(queryString, [postingId])
-		.then(resolve => resolve.rows)
+		.then(resolve => resolve.rows[0])
 		.catch(error => console.log(error));
 };
 
@@ -338,29 +338,29 @@ export const getPostingsByUserId = (option: Number) => {
 
 export const getAllMessages = () => {
 	return pool
-	.query(
-		`
+		.query(
+			`
 		SELECT *
 		FROM messages
 		;
 		`,
-		[]
-	)
-	.then(resolve => resolve.rows)
-	.catch(error => console.log(error));
+			[]
+		)
+		.then(resolve => resolve.rows)
+		.catch(error => console.log(error));
 };
 
 export const getConvo = (sender_id: Number, receiver_id: Number) => {
 	return pool
-	.query(
-		`
+		.query(
+			`
 		SELECT *
 		FROM messages
 		WHERE sender_id = $1 AND receiver_id = $2
 		;
 		`,
-		[sender_id, receiver_id]
-	)
-	.then(resolve => resolve.rows)
-	.catch(error => console.log(error));
+			[sender_id, receiver_id]
+		)
+		.then(resolve => resolve.rows)
+		.catch(error => console.log(error));
 };
