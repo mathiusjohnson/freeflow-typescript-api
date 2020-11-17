@@ -1,15 +1,16 @@
 import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import { QueryFunctions } from '../customInterface';
 
 const router = express.Router();
 
 // path api/users - return all users
-module.exports = (queryFunctions: any) => {
+module.exports = (queryFunctions: QueryFunctions) => {
 	// get an array of all users
 	router.get('/', (req: Request, res: Response) => {
 		queryFunctions
 			.getUsers()
-			.then((resolve: Array<object>) => res.send(resolve))
+			.then(resolve => res.send(resolve))
 			.catch((error: string) => console.log(error));
 	});
 
@@ -47,7 +48,7 @@ module.exports = (queryFunctions: any) => {
 	});
 
 	router.patch('/:id', (req: Request, res: Response) => {
-		const userId = req.params.id;
+		const userId = Number(req.params.id);
 		const userInfo = req.body;
 		queryFunctions
 			.editUserById(userInfo, userId)

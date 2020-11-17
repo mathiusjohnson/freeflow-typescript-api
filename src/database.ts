@@ -242,7 +242,18 @@ export const getLikeCount = (id: Number) => {
 		.catch(error => console.log(error));
 };
 
-export const editUserById = (userInfo: Object, userId: Number) => {
+export const editUserById = (
+	userInfo: {
+		first_name?: String;
+		last_name?: String;
+		email?: String;
+		password?: String;
+		avatar?: String;
+		location?: String;
+		description?: String;
+	},
+	userId: Number
+) => {
 	const updateFields = Object.keys(userInfo);
 	const updateValues = Object.values(userInfo);
 	let queryString = `
@@ -266,7 +277,15 @@ export const editUserById = (userInfo: Object, userId: Number) => {
 		.catch(error => console.log(error));
 };
 
-export const register = (userInfo: Object) => {
+export const register = (userInfo: {
+	first_name: String;
+	last_name: String;
+	email: String;
+	password: String;
+	avatar: String;
+	location: String;
+	description: String;
+}) => {
 	const queryString = `
 	insert into users (first_name, last_name, email, password, avatar, location, description, active) values ($1, $2, $3, $4, $5, $6, $7, true)
 	RETURNING *;
@@ -307,27 +326,27 @@ export const getUsers = () => {
 		.catch(error => console.log(error));
 };
 
-export const getUserById = (id: Number) => {
+export const getUserById = (userId: Number) => {
 	return pool
 		.query(
 			`
   SELECT * FROM users
     WHERE id = $1
   `,
-			[id]
+			[userId]
 		)
 		.then(resolve => resolve.rows[0])
 		.catch(error => console.log(error));
 };
 
-export const getPostingsByUserId = (option: Number) => {
+export const getPostingsByUserId = (userId: Number) => {
 	return pool
 		.query(
 			`
     SELECT * FROM postings
     WHERE owner_id = $1
     `,
-			[option]
+			[userId]
 		)
 		.then(resolve => resolve.rows)
 		.catch(error => console.log(error));

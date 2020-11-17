@@ -27,12 +27,32 @@ export interface QueryFunctions {
 	getKarmaCountByUser: () => Promise<Number>;
 	addLike: () => Promise<Object>;
 	getLikeCount: () => Promise<Number>;
-	editUserById: () => Promise<Object>;
-	register: () => Promise<Object>;
-	validateLogin: () => Promise<Object>;
+	editUserById: (
+		userInfo: {
+			first_name?: String;
+			last_name?: String;
+			email?: String;
+			password?: String;
+			avatar?: String;
+			location?: String;
+			description?: String;
+		},
+		userId: Number
+	) => Promise<Object>;
+
+	register: (userInfo: {
+		first_name: String;
+		last_name: String;
+		email: String;
+		password: String;
+		avatar: String;
+		location: String;
+		description: String;
+	}) => Promise<Object>;
+	validateLogin: (email: string, password: string) => Promise<Object>;
 	getUsers: () => Promise<Object>;
-	getUserById: () => Promise<Object>;
-	getPostingsByUserId: () => Promise<Array<Object>>;
+	getUserById: (userId: Number) => Promise<Object>;
+	getPostingsByUserId: (userId: Number) => Promise<Array<Object>>;
 	getAllMessages: () => Promise<Array<Object>>;
 	getConvo: () => Promise<Array<Object>>;
 }
