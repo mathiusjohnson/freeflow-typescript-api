@@ -1,16 +1,17 @@
 import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import { QueryFunctions } from '../customInterface';
 
 const router = express.Router();
 
 // path api/users - return all users
-module.exports = (queryFunctions: any) => {
+module.exports = (queryFunctions: QueryFunctions) => {
 	// get an array of all users
 	router.get('/', (req: Request, res: Response) => {
 		queryFunctions
 			.getUsers()
-			.then((resolve: Array<object>) => res.send(resolve))
-			.catch((error: any) => console.log(error));
+			.then(resolve => res.send(resolve))
+			.catch((error: string) => console.log(error));
 	});
 
 	// get the user object by users.id
@@ -19,7 +20,7 @@ module.exports = (queryFunctions: any) => {
 		queryFunctions
 			.getUserById(userId)
 			.then((resolve: object) => res.send(resolve))
-			.catch((error: any) => console.log(error));
+			.catch((error: string) => console.log(error));
 	});
 
 	// get an array of postings by users.id
@@ -28,7 +29,7 @@ module.exports = (queryFunctions: any) => {
 		queryFunctions
 			.getPostingsByUserId(userId)
 			.then((resolve: object) => res.send(resolve))
-			.catch((error: any) => console.log(error));
+			.catch((error: string) => console.log(error));
 	});
 
 	router.post('/register', (req: Request, res: Response) => {
@@ -47,7 +48,7 @@ module.exports = (queryFunctions: any) => {
 	});
 
 	router.patch('/:id', (req: Request, res: Response) => {
-		const userId = req.params.id;
+		const userId = Number(req.params.id);
 		const userInfo = req.body;
 		queryFunctions
 			.editUserById(userInfo, userId)

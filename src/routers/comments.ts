@@ -1,29 +1,38 @@
 import express, { Request, Response } from 'express';
+import { QueryFunctions } from '../customInterface';
 
 const router = express.Router();
 
-module.exports = (queryFunction: any) => {
+module.exports = (queryFunctions: QueryFunctions) => {
 	router.get('/edit/:id', (req: Request, res: Response) => {
-		const commentId = req.params.id;
-		queryFunction
+		const commentId = Number(req.params.id);
+		queryFunctions
 			.getCommentById(commentId)
 			.then((resolve: Object) => res.send(resolve))
 			.catch((error: String) => console.log(error));
 	});
 
 	router.get('/:id', (req: Request, res: Response) => {
-		const postingId = req.params.id;
-		queryFunction
+		const postingId = Number(req.params.id);
+		queryFunctions
 			.getCommentsByPosting(postingId)
 			.then((resolve: Array<Object>) => res.send(resolve))
 			.catch((error: String) => console.log(error));
 	});
 
+	router.get(`/`, (req: Request, res: Response) => {
+		queryFunctions
+			.getAllComments()
+			.then((resolve: Array<Object>) => res.send(resolve))
+			.catch((error: String) => console.log(error));
+	});
+
 	router.post('/:id', (req: Request, res: Response) => {
-		const postingId = req.params.id;
-		const userId = req.body.userId;
+		const postingId = Number(req.params.id);
+		const userId = req.body.commenter_id;
 		const content = req.body.content;
-		queryFunction
+		console.log(postingId, userId, content);
+		queryFunctions
 			.addComment(postingId, userId, content)
 			.then((resolve: Object) => res.send(resolve))
 			.catch((error: String) => console.log(error));
@@ -33,7 +42,7 @@ module.exports = (queryFunction: any) => {
 		const commentId = Number(req.params.commentId);
 		const commenterId = req.body.userId;
 		const newContent = req.body.content;
-		queryFunction
+		queryFunctions
 			.editComment(commentId, commenterId, newContent)
 			.then((resolve: Object) => res.send(resolve))
 			.catch((error: String) => console.log(error));
@@ -42,7 +51,7 @@ module.exports = (queryFunction: any) => {
 	router.delete('/:commentId', (req: Request, res: Response) => {
 		const commentId = Number(req.params.commentId);
 		const commenterId = req.body.userId;
-		queryFunction
+		queryFunctions
 			.deleteComment(commentId, commenterId)
 			.then((resolve: Object) => res.send(resolve))
 			.catch((error: String) => console.log(error));

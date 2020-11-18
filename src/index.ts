@@ -15,6 +15,7 @@ const likeRouter = require('./routers/likes');
 const karmaRouter = require('./routers/karmas');
 const commentRouter = require('./routers/comments');
 const postingRouter = require('./routers/postings');
+const messagesRouter = require('./routers/messages');
 
 app.use(helmet());
 // middleware
@@ -26,6 +27,7 @@ app.use('/api/likes', likeRouter(queryFunctions));
 app.use('/api/karmas', karmaRouter(queryFunctions));
 app.use('/api/comments', commentRouter(queryFunctions));
 app.use('/api/postings', postingRouter(queryFunctions));
+app.use('/api/messages', messagesRouter(queryFunctions));
 
 app.get('/', (req: Request, res: Response) =>
 	res.send('Express TypeScript Server')

@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
+import { QueryFunctions } from '../customInterface';
 
 const router = express.Router();
 
-module.exports = (queryFunctions: any) => {
+module.exports = (queryFunctions: QueryFunctions) => {
 	router.get('/user', (req: Request, res: Response) => {
 		const userId = req.body.userId; // ???
 		queryFunctions

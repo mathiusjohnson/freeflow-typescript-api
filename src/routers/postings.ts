@@ -1,7 +1,8 @@
 import express, { Request, Response } from 'express';
+import { QueryFunctions } from '../customInterface';
 const router = express.Router();
 
-module.exports = (queryFunctions: any) => {
+module.exports = (queryFunctions: QueryFunctions) => {
 	router.get('/:id', (req: Request, res: Response) => {
 		const postingId = Number(req.params.id);
 		console.log(postingId);
@@ -40,7 +41,7 @@ module.exports = (queryFunctions: any) => {
 		const userId = req.body.owner_id;
 		queryFunctions
 			.deletePosting(postingId, userId)
-			.then((resolve: any) => res.send(resolve))
+			.then((resolve: Object) => res.send(resolve))
 			.catch((error: String) => console.log(error));
 	});
 
