@@ -33,11 +33,19 @@ export interface QueryFunctions {
 		content: String
 	) => Promise<Object>;
 	getCommentsByPosting: (postingId: Number) => Promise<Array<Object>>;
+	getAllComments: () => Promise<Array<Object>>;
+
+	//Karma
 	giveKarma: (commentId: Number, userId: Number) => Promise<Object>;
 	getKarmaCountByComment: (commentId: Number) => Promise<Number>;
 	getKarmaCountByUser: (userId: Number) => Promise<Number>;
+
+	//Likes
 	addLike: (postingId: Number, userId: Number) => Promise<Object>;
 	getLikeCount: (postingId: Number) => Promise<Number>;
+	getAllLikes: () => Promise<Array<Object>>;
+
+	//Users
 	editUserById: (
 		userInfo: {
 			first_name?: String;
