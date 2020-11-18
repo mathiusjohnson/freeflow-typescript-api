@@ -10,6 +10,20 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
+export const getAllLikes = () => {
+	return pool
+		.query(`SELECT * from likes`)
+		.then(resolve => resolve.rows)
+		.catch(error => console.log(error));
+};
+
+export const getAllComments = () => {
+	return pool
+		.query(`SELECT * from comments`)
+		.then(resolve => resolve.rows)
+		.catch(error => console.log(error));
+};
+
 export const deletePosting = (postingId: Number, userId: Number) => {
 	const queryString = `
 	UPDATE postings SET "deleted" = 'true' where id = $1 AND owner_id = $2
