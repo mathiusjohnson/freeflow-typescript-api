@@ -29,8 +29,9 @@ module.exports = (queryFunctions: QueryFunctions) => {
 
 	router.post('/:id', (req: Request, res: Response) => {
 		const postingId = Number(req.params.id);
-		const userId = req.body.userId;
+		const userId = req.body.commenter_id;
 		const content = req.body.content;
+		console.log(postingId, userId, content);
 		queryFunctions
 			.addComment(postingId, userId, content)
 			.then((resolve: Object) => res.send(resolve))
