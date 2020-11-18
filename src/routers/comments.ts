@@ -3,10 +3,10 @@ import { QueryFunctions } from '../customInterface';
 
 const router = express.Router();
 
-module.exports = (queryFunction: QueryFunctions) => {
+module.exports = (queryFunctions: QueryFunctions) => {
 	router.get('/edit/:id', (req: Request, res: Response) => {
 		const commentId = Number(req.params.id);
-		queryFunction
+		queryFunctions
 			.getCommentById(commentId)
 			.then((resolve: Object) => res.send(resolve))
 			.catch((error: String) => console.log(error));
@@ -14,8 +14,15 @@ module.exports = (queryFunction: QueryFunctions) => {
 
 	router.get('/:id', (req: Request, res: Response) => {
 		const postingId = Number(req.params.id);
-		queryFunction
+		queryFunctions
 			.getCommentsByPosting(postingId)
+			.then((resolve: Array<Object>) => res.send(resolve))
+			.catch((error: String) => console.log(error));
+	});
+
+	router.get(`/`, (req: Request, res: Response) => {
+		queryFunctions
+			.getAllComments()
 			.then((resolve: Array<Object>) => res.send(resolve))
 			.catch((error: String) => console.log(error));
 	});
@@ -24,7 +31,7 @@ module.exports = (queryFunction: QueryFunctions) => {
 		const postingId = Number(req.params.id);
 		const userId = req.body.userId;
 		const content = req.body.content;
-		queryFunction
+		queryFunctions
 			.addComment(postingId, userId, content)
 			.then((resolve: Object) => res.send(resolve))
 			.catch((error: String) => console.log(error));
@@ -34,7 +41,7 @@ module.exports = (queryFunction: QueryFunctions) => {
 		const commentId = Number(req.params.commentId);
 		const commenterId = req.body.userId;
 		const newContent = req.body.content;
-		queryFunction
+		queryFunctions
 			.editComment(commentId, commenterId, newContent)
 			.then((resolve: Object) => res.send(resolve))
 			.catch((error: String) => console.log(error));
@@ -43,7 +50,7 @@ module.exports = (queryFunction: QueryFunctions) => {
 	router.delete('/:commentId', (req: Request, res: Response) => {
 		const commentId = Number(req.params.commentId);
 		const commenterId = req.body.userId;
-		queryFunction
+		queryFunctions
 			.deleteComment(commentId, commenterId)
 			.then((resolve: Object) => res.send(resolve))
 			.catch((error: String) => console.log(error));

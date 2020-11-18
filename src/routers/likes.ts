@@ -11,6 +11,13 @@ module.exports = (queryFunctions: QueryFunctions) => {
 			.catch((error: string) => console.log(error));
 	});
 
+	router.get(`/`, (req: Request, res: Response) => {
+		queryFunctions
+			.getAllLikes()
+			.then((resolve: Array<Object>) => res.send(resolve))
+			.catch((error: String) => console.log(error));
+	});
+
 	router.post('/:id', (req: Request, res: Response) => {
 		const postingId = Number(req.params.id);
 		const userId = req.body.userId; // ???
