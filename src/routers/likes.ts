@@ -20,7 +20,7 @@ module.exports = (queryFunctions: QueryFunctions) => {
 
 	router.post('/:id', (req: Request, res: Response) => {
 		const postingId = Number(req.params.id);
-		const userId = req.body.userId; // ???
+		const userId = req.body.liker_id; // ???
 		queryFunctions
 			.addLike(postingId, userId)
 			.then((resolve: object) => res.send(resolve))
