@@ -10,6 +10,20 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
+export const getAllKarmas = () => {
+	return pool
+		.query(
+			`
+	SELECT giver_id, users.id as receiver_id, comment_id
+	from karmas
+	JOIN comments ON comment_id = comments.id
+	JOIN users ON commenter_id = users.id
+	`
+		)
+		.then(resolve => resolve.rows)
+		.catch(error => console.log(error));
+};
+
 export const getAllLikes = () => {
 	return pool
 		.query(`SELECT * from likes`)
