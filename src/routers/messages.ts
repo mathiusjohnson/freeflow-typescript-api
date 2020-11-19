@@ -6,8 +6,8 @@ module.exports = (queryFunctions: QueryFunctions) => {
 	router.get('/', (req: Request, res: Response) => {
 		queryFunctions
 			.getAllMessages()
-			.then((resolve: Object) => res.send(resolve))
-			.catch((error: String) => console.log(error));
+			.then((resolve: object) => res.send(resolve))
+			.catch((error: string) => console.log(error));
 	});
 
 	router.get(
@@ -18,8 +18,8 @@ module.exports = (queryFunctions: QueryFunctions) => {
 
 			queryFunctions
 				.getConvo(senderID, receiverID)
-				.then((resolve: Object) => res.send(resolve))
-				.catch((error: String) => console.log(error));
+				.then((resolve: object) => res.send(resolve))
+				.catch((error: string) => console.log(error));
 		}
 	);
 

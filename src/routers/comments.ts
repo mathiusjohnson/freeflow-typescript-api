@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { QueryFunctions } from '../customInterface';
+import { QueryFunctions, Comment } from '../customInterface';
 
 const router = express.Router();
 
@@ -8,23 +8,23 @@ module.exports = (queryFunctions: QueryFunctions) => {
 		const commentId = Number(req.params.id);
 		queryFunctions
 			.getCommentById(commentId)
-			.then((resolve: Object) => res.send(resolve))
-			.catch((error: String) => console.log(error));
+			.then((resolve: Comment) => res.send(resolve))
+			.catch(error => console.log(error));
 	});
 
 	router.get('/:id', (req: Request, res: Response) => {
 		const postingId = Number(req.params.id);
 		queryFunctions
 			.getCommentsByPosting(postingId)
-			.then((resolve: Array<Object>) => res.send(resolve))
-			.catch((error: String) => console.log(error));
+			.then((resolve: Array<Comment>) => res.send(resolve))
+			.catch(error => console.log(error));
 	});
 
 	router.get(`/`, (req: Request, res: Response) => {
 		queryFunctions
 			.getAllComments()
-			.then((resolve: Array<Object>) => res.send(resolve))
-			.catch((error: String) => console.log(error));
+			.then((resolve: Array<Comment>) => res.send(resolve))
+			.catch(error => console.log(error));
 	});
 
 	router.post('/:id', (req: Request, res: Response) => {
@@ -34,8 +34,8 @@ module.exports = (queryFunctions: QueryFunctions) => {
 		console.log(postingId, userId, content);
 		queryFunctions
 			.addComment(postingId, userId, content)
-			.then((resolve: Object) => res.send(resolve))
-			.catch((error: String) => console.log(error));
+			.then((resolve: Comment) => res.send(resolve))
+			.catch(error => console.log(error));
 	});
 
 	router.patch('/:commentId', (req: Request, res: Response) => {
@@ -44,8 +44,8 @@ module.exports = (queryFunctions: QueryFunctions) => {
 		const newContent = req.body.content;
 		queryFunctions
 			.editComment(commentId, commenterId, newContent)
-			.then((resolve: Object) => res.send(resolve))
-			.catch((error: String) => console.log(error));
+			.then((resolve: Comment) => res.send(resolve))
+			.catch(error => console.log(error));
 	});
 
 	router.delete('/:commentId', (req: Request, res: Response) => {
@@ -53,8 +53,8 @@ module.exports = (queryFunctions: QueryFunctions) => {
 		const commenterId = req.body.userId;
 		queryFunctions
 			.deleteComment(commentId, commenterId)
-			.then((resolve: Object) => res.send(resolve))
-			.catch((error: String) => console.log(error));
+			.then((resolve: Comment) => res.send(resolve))
+			.catch(error => console.log(error));
 	});
 
 	return router;
