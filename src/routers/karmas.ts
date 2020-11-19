@@ -4,6 +4,13 @@ import { QueryFunctions } from '../customInterface';
 const router = express.Router();
 
 module.exports = (queryFunctions: QueryFunctions) => {
+	router.get('/', (req: Request, res: Response) => {
+		queryFunctions
+			.getAllKarmas()
+			.then((resolve: object) => res.send(resolve))
+			.catch((error: string) => console.log(error));
+	});
+
 	router.get('/user', (req: Request, res: Response) => {
 		const userId = req.body.receiver_id;
 		queryFunctions
