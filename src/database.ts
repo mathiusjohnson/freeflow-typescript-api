@@ -230,6 +230,18 @@ export const getKarmaCountByUser = (userId: Number) => {
 		.catch(error => console.log(error));
 };
 
+export const getAllKarmas = (id: Number) => {
+	const queryString = `
+	SELECT * FROM karmas;
+	`;
+	return pool
+		.query(queryString)
+		.then(resolve => {
+			return resolve.rows;
+		})
+		.catch(error => console.log(error));
+};
+
 export const addLike = (postingId: Number, userId: Number) => {
 	const queryString = `
 	INSERT INTO likes (liker_id, posting_id)
