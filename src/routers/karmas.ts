@@ -5,7 +5,7 @@ const router = express.Router();
 
 module.exports = (queryFunctions: QueryFunctions) => {
 	router.get('/user', (req: Request, res: Response) => {
-		const userId = req.body.giver_id; // ???
+		const userId = req.body.receiver_id;
 		queryFunctions
 			.getKarmaCountByUser(userId)
 			.then((resolve: object) => res.send(resolve))
