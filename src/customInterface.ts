@@ -44,7 +44,7 @@ export interface QueryFunctions {
 	//Likes
 	addLike: (postingId: Number, userId: Number) => Promise<Object>;
 	getLikeCount: (postingId: Number) => Promise<Number>;
-	getAllLikes: () => Promise<Array<Object>>;
+	getLikes: () => Promise<Array<Object>>;
 
 	//Users
 	editUserById: (
