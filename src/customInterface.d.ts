@@ -56,7 +56,9 @@ export interface QueryFunctions {
 	giveKarma: (commentId: number, userId: number) => Promise<object>;
 	getKarmaCountByComment: (commentId: number) => Promise<number>;
 	getKarmaCountByUser: (userId: number) => Promise<number>;
-	getAllKarmas: () => Promise<Array<object>>;
+	getAllKarmas: () => Promise<
+		Array<{ giver_id: number; receiver_id: number; comment_id: id }>
+	>;
 
 	//Likes
 	addLike: (postingId: number, userId: number) => Promise<object>;

@@ -7,7 +7,15 @@ module.exports = (queryFunctions: QueryFunctions) => {
 	router.get('/', (req: Request, res: Response) => {
 		queryFunctions
 			.getAllKarmas()
-			.then((resolve: object) => res.send(resolve))
+			.then(
+				(
+					resolve: Array<{
+						giver_id: number;
+						receiver_id: number;
+						comment_id: number;
+					}>
+				) => res.send(resolve)
+			)
 			.catch((error: string) => console.log(error));
 	});
 
