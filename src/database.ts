@@ -252,7 +252,7 @@ export const addLike = (postingId: Number, userId: Number) => {
 		.catch(error => console.log(error));
 };
 
-export const getLikes = (id: Number) => {
+export const getAllLikes = (id: Number) => {
 	const queryString = `
 	SELECT * FROM likes;
 	`;
