@@ -6,8 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 module.exports = (queryFunctions) => {
+    router.get('/', (req, res) => {
+        queryFunctions
+            .getAllKarmas()
+            .then((resolve) => res.send(resolve))
+            .catch((error) => console.log(error));
+    });
     router.get('/user', (req, res) => {
-        const userId = req.body.userId; // ???
+        const userId = req.body.receiver_id;
         queryFunctions
             .getKarmaCountByUser(userId)
             .then((resolve) => res.send(resolve))

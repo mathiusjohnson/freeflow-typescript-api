@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const router = express_1.default.Router();
 // path api/users - return all users
 module.exports = (queryFunctions) => {
@@ -11,7 +12,7 @@ module.exports = (queryFunctions) => {
     router.get('/', (req, res) => {
         queryFunctions
             .getUsers()
-            .then((resolve) => res.send(resolve))
+            .then(resolve => res.send(resolve))
             .catch((error) => console.log(error));
     });
     // get the user object by users.id
@@ -32,13 +33,21 @@ module.exports = (queryFunctions) => {
     });
     router.post('/register', (req, res) => {
         const userInfo = req.body;
-        queryFunctions
-            .register(userInfo)
-            .then((resolve) => res.send(resolve))
-            .catch((error) => console.log(error));
+        bcrypt_1.default.hash(userInfo.password, 10, (err, hash) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                userInfo.password = hash;
+                queryFunctions
+                    .register(userInfo)
+                    .then((resolve) => res.send(resolve))
+                    .catch((error) => console.log(error));
+            }
+        });
     });
     router.patch('/:id', (req, res) => {
-        const userId = req.params.id;
+        const userId = Number(req.params.id);
         const userInfo = req.body;
         queryFunctions
             .editUserById(userInfo, userId)
@@ -49,7 +58,10 @@ module.exports = (queryFunctions) => {
         const { email, password } = req.body;
         queryFunctions
             .validateLogin(email, password)
-            .then((resolve) => res.send(resolve))
+            .then((resolve) => {
+            console.log('login completed');
+            return res.send(resolve);
+        })
             .catch((error) => console.log(error));
     });
     return router;

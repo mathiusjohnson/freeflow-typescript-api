@@ -9,11 +9,7 @@ module.exports = (queryFunctions: QueryFunctions) => {
 			.getAllKarmas()
 			.then(
 				(
-					resolve: Array<{
-						giver_id: number;
-						receiver_id: number;
-						comment_id: number;
-					}>
+					resolve: Array<object>
 				) => res.send(resolve)
 			)
 			.catch((error: string) => console.log(error));
@@ -23,7 +19,7 @@ module.exports = (queryFunctions: QueryFunctions) => {
 		const userId = req.body.receiver_id;
 		queryFunctions
 			.getKarmaCountByUser(userId)
-			.then((resolve: number) => res.send(resolve))
+			.then((resolve: Number) => res.send(resolve))
 			.catch((error: string) => console.log(error));
 	});
 
@@ -31,7 +27,7 @@ module.exports = (queryFunctions: QueryFunctions) => {
 		const commentId = Number(req.params.id);
 		queryFunctions
 			.getKarmaCountByComment(commentId)
-			.then((resolve: number) => res.send(resolve))
+			.then((resolve: Number) => res.send(resolve))
 			.catch((error: string) => console.log(error));
 	});
 
