@@ -4,18 +4,22 @@ import { QueryFunctions } from '../customInterface';
 const router = express.Router();
 
 module.exports = (queryFunctions: QueryFunctions) => {
-	router.get(`/`, (req: Request, res: Response) => {
+	router.get('/', (req: Request, res: Response) => {
 		queryFunctions
 			.getAllKarmas()
-			.then((resolve: Array<Object>) => res.send(resolve))
-			.catch((error: String) => console.log(error));
+			.then(
+				(
+					resolve: Array<object>
+				) => res.send(resolve)
+			)
+			.catch((error: string) => console.log(error));
 	});
 
 	router.get('/user', (req: Request, res: Response) => {
-		const userId = req.body.giver_id; // ???
+		const userId = req.body.receiver_id;
 		queryFunctions
 			.getKarmaCountByUser(userId)
-			.then((resolve: object) => res.send(resolve))
+			.then((resolve: Number) => res.send(resolve))
 			.catch((error: string) => console.log(error));
 	});
 
@@ -23,7 +27,7 @@ module.exports = (queryFunctions: QueryFunctions) => {
 		const commentId = Number(req.params.id);
 		queryFunctions
 			.getKarmaCountByComment(commentId)
-			.then((resolve: object) => res.send(resolve))
+			.then((resolve: Number) => res.send(resolve))
 			.catch((error: string) => console.log(error));
 	});
 

@@ -7,15 +7,15 @@ module.exports = (queryFunctions: QueryFunctions) => {
 		const postingId = Number(req.params.id);
 		queryFunctions
 			.getLikeCount(postingId)
-			.then((resolve: object) => res.send(resolve))
+			.then((resolve: Number) => res.send(resolve))
 			.catch((error: string) => console.log(error));
 	});
 
 	router.get(`/`, (req: Request, res: Response) => {
 		queryFunctions
 			.getAllLikes()
-			.then((resolve: Array<Object>) => res.send(resolve))
-			.catch((error: String) => console.log(error));
+			.then((resolve: Array<object>) => res.send(resolve))
+			.catch((error: string) => console.log(error));
 	});
 
 	router.post('/:id', (req: Request, res: Response) => {

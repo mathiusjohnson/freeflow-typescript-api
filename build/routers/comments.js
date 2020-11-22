@@ -11,20 +11,20 @@ module.exports = (queryFunctions) => {
         queryFunctions
             .getCommentById(commentId)
             .then((resolve) => res.send(resolve))
-            .catch((error) => console.log(error));
+            .catch(error => console.log(error));
     });
     router.get('/:id', (req, res) => {
         const postingId = Number(req.params.id);
         queryFunctions
             .getCommentsByPosting(postingId)
             .then((resolve) => res.send(resolve))
-            .catch((error) => console.log(error));
+            .catch(error => console.log(error));
     });
     router.get(`/`, (req, res) => {
         queryFunctions
             .getAllComments()
             .then((resolve) => res.send(resolve))
-            .catch((error) => console.log(error));
+            .catch(error => console.log(error));
     });
     router.post('/:id', (req, res) => {
         const postingId = Number(req.params.id);
@@ -34,7 +34,7 @@ module.exports = (queryFunctions) => {
         queryFunctions
             .addComment(postingId, userId, content)
             .then((resolve) => res.send(resolve))
-            .catch((error) => console.log(error));
+            .catch(error => console.log(error));
     });
     router.patch('/:commentId', (req, res) => {
         const commentId = Number(req.params.commentId);
@@ -43,7 +43,7 @@ module.exports = (queryFunctions) => {
         queryFunctions
             .editComment(commentId, commenterId, newContent)
             .then((resolve) => res.send(resolve))
-            .catch((error) => console.log(error));
+            .catch(error => console.log(error));
     });
     router.delete('/:commentId', (req, res) => {
         const commentId = Number(req.params.commentId);
@@ -51,7 +51,7 @@ module.exports = (queryFunctions) => {
         queryFunctions
             .deleteComment(commentId, commenterId)
             .then((resolve) => res.send(resolve))
-            .catch((error) => console.log(error));
+            .catch(error => console.log(error));
     });
     return router;
 };

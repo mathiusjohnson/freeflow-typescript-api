@@ -10,9 +10,16 @@ const pool = new Pool({
 	database: process.env.DB_NAME,
 });
 
-export const getAllLikes = () => {
+export const getAllKarmas = () => {
 	return pool
-		.query(`SELECT * from likes`)
+		.query(
+			`
+	SELECT karmas.id, giver_id, users.id as receiver_id, comment_id
+	from karmas
+	JOIN comments ON comment_id = comments.id
+	JOIN users ON commenter_id = users.id
+	`
+		)
 		.then(resolve => resolve.rows)
 		.catch(error => console.log(error));
 };
@@ -230,17 +237,6 @@ export const getKarmaCountByUser = (userId: Number) => {
 		.catch(error => console.log(error));
 };
 
-export const getAllKarmas = (id: Number) => {
-	const queryString = `
-	SELECT * FROM karmas;
-	`;
-	return pool
-		.query(queryString)
-		.then(resolve => {
-			return resolve.rows;
-		})
-		.catch(error => console.log(error));
-};
 
 export const addLike = (postingId: Number, userId: Number) => {
 	const queryString = `
@@ -256,7 +252,7 @@ export const addLike = (postingId: Number, userId: Number) => {
 		.catch(error => console.log(error));
 };
 
-export const getLikes = (id: Number) => {
+export const getAllLikes = (id: Number) => {
 	const queryString = `
 	SELECT * FROM likes;
 	`;

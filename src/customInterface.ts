@@ -1,3 +1,20 @@
+export interface Comment {
+	id: number;
+	commenter_id: number;
+	posting_id: number;
+	content: string;
+	deleted: boolean;
+	created_at: string;
+	first_name: string;
+	last_name: string;
+	email: string;
+	password: string;
+	avatar: string;
+	location: string;
+	description: string;
+	active: boolean;
+}
+
 export interface QueryFunctions {
 	// Postings
 	deletePosting: (postingId: Number, userId: Number) => Promise<Object>;

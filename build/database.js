@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getConvo = exports.getAllMessages = exports.getPostingsByUserId = exports.getUserById = exports.getUsers = exports.validateLogin = exports.register = exports.editUserById = exports.getLikeCount = exports.getLikes = exports.addLike = exports.getAllKarmas = exports.getKarmaCountByUser = exports.getKarmaCountByComment = exports.giveKarma = exports.getCommentsByPosting = exports.addComment = exports.getCommentById = exports.editComment = exports.deleteComment = exports.getPostingById = exports.getAllPostings = exports.addPosting = exports.editPosting = exports.deletePosting = exports.getAllComments = exports.getAllLikes = void 0;
+exports.getConvo = exports.getAllMessages = exports.getPostingsByUserId = exports.getUserById = exports.getUsers = exports.validateLogin = exports.register = exports.editUserById = exports.getLikeCount = exports.getAllLikes = exports.addLike = exports.getKarmaCountByUser = exports.getKarmaCountByComment = exports.giveKarma = exports.getCommentsByPosting = exports.addComment = exports.getCommentById = exports.editComment = exports.deleteComment = exports.getPostingById = exports.getAllPostings = exports.addPosting = exports.editPosting = exports.deletePosting = exports.getAllComments = exports.getAllKarmas = void 0;
 const pg_1 = __importDefault(require("pg"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const { Pool } = pg_1.default;
@@ -14,9 +14,14 @@ const pool = new Pool({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
 });
-exports.getAllLikes = () => {
+exports.getAllKarmas = () => {
     return pool
-        .query(`SELECT * from likes`)
+        .query(`
+	SELECT karmas.id, giver_id, users.id as receiver_id, comment_id
+	from karmas
+	JOIN comments ON comment_id = comments.id
+	JOIN users ON commenter_id = users.id
+	`)
         .then(resolve => resolve.rows)
         .catch(error => console.log(error));
 };
@@ -195,17 +200,6 @@ exports.getKarmaCountByUser = (userId) => {
     })
         .catch(error => console.log(error));
 };
-exports.getAllKarmas = (id) => {
-    const queryString = `
-	SELECT * FROM karmas;
-	`;
-    return pool
-        .query(queryString)
-        .then(resolve => {
-        return resolve.rows;
-    })
-        .catch(error => console.log(error));
-};
 exports.addLike = (postingId, userId) => {
     const queryString = `
 	INSERT INTO likes (liker_id, posting_id)
@@ -219,7 +213,7 @@ exports.addLike = (postingId, userId) => {
     })
         .catch(error => console.log(error));
 };
-exports.getLikes = (id) => {
+exports.getAllLikes = (id) => {
     const queryString = `
 	SELECT * FROM likes;
 	`;
