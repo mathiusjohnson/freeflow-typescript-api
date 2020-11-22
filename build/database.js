@@ -3,8 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPostingsByUserId = exports.getUserById = exports.getUsers = exports.validateLogin = exports.register = exports.editUserById = exports.getLikeCount = exports.addLike = exports.getKarmaCountByUser = exports.getKarmaCountByComment = exports.giveKarma = exports.getCommentsByPosting = exports.addComment = exports.getCommentById = exports.editComment = exports.deleteComment = exports.getPostingById = exports.getAllPostings = exports.addPosting = exports.editPosting = exports.deletePosting = void 0;
+exports.getConvo = exports.getAllMessages = exports.getPostingsByUserId = exports.getUserById = exports.getUsers = exports.validateLogin = exports.register = exports.editUserById = exports.getLikeCount = exports.getLikes = exports.addLike = exports.getAllKarmas = exports.getKarmaCountByUser = exports.getKarmaCountByComment = exports.giveKarma = exports.getCommentsByPosting = exports.addComment = exports.getCommentById = exports.editComment = exports.deleteComment = exports.getPostingById = exports.getAllPostings = exports.addPosting = exports.editPosting = exports.deletePosting = exports.getAllComments = exports.getAllLikes = void 0;
 const pg_1 = __importDefault(require("pg"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const { Pool } = pg_1.default;
 const pool = new Pool({
     host: process.env.DB_HOST,
@@ -13,6 +14,18 @@ const pool = new Pool({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
 });
+exports.getAllLikes = () => {
+    return pool
+        .query(`SELECT * from likes`)
+        .then(resolve => resolve.rows)
+        .catch(error => console.log(error));
+};
+exports.getAllComments = () => {
+    return pool
+        .query(`SELECT * from comments`)
+        .then(resolve => resolve.rows)
+        .catch(error => console.log(error));
+};
 exports.deletePosting = (postingId, userId) => {
     const queryString = `
 	UPDATE postings SET "deleted" = 'true' where id = $1 AND owner_id = $2
@@ -57,6 +70,7 @@ exports.addPosting = (posting) => {
 	RETURNING *
 	`;
     const queryParams = Object.values(posting);
+    console.log("query params in db addposting: ", queryParams);
     return pool
         .query(queryString, queryParams)
         .then(resolve => resolve.rows[0])
@@ -79,7 +93,7 @@ exports.getPostingById = (postingId) => {
 	`;
     return pool
         .query(queryString, [postingId])
-        .then(resolve => resolve.rows)
+        .then(resolve => resolve.rows[0])
         .catch(error => console.log(error));
 };
 exports.deleteComment = (commentId, commenterId) => {
@@ -151,20 +165,20 @@ exports.giveKarma = (commentId, userId) => {
     })
         .catch(error => console.log(error));
 };
-exports.getKarmaCountByComment = (id) => {
+exports.getKarmaCountByComment = (commentId) => {
     const queryString = `
 	SELECT COUNT(*)
 		FROM karmas
 		WHERE comment_id = $1
 	`;
     return pool
-        .query(queryString, [id])
+        .query(queryString, [commentId])
         .then(resolve => {
-        return resolve.rows[0];
+        return resolve.rows[0].count;
     })
         .catch(error => console.log(error));
 };
-exports.getKarmaCountByUser = (id) => {
+exports.getKarmaCountByUser = (userId) => {
     const queryString = `
 	SELECT COUNT(*)
 		FROM karmas
@@ -175,9 +189,20 @@ exports.getKarmaCountByUser = (id) => {
 			WHERE users.id = $1
 	`;
     return pool
-        .query(queryString, [id])
+        .query(queryString, [userId])
         .then(resolve => {
-        return resolve.rows[0];
+        return resolve.rows[0].count;
+    })
+        .catch(error => console.log(error));
+};
+exports.getAllKarmas = (id) => {
+    const queryString = `
+	SELECT * FROM karmas;
+	`;
+    return pool
+        .query(queryString)
+        .then(resolve => {
+        return resolve.rows;
     })
         .catch(error => console.log(error));
 };
@@ -194,16 +219,27 @@ exports.addLike = (postingId, userId) => {
     })
         .catch(error => console.log(error));
 };
-exports.getLikeCount = (id) => {
+exports.getLikes = (id) => {
+    const queryString = `
+	SELECT * FROM likes;
+	`;
+    return pool
+        .query(queryString)
+        .then(resolve => {
+        return resolve.rows;
+    })
+        .catch(error => console.log(error));
+};
+exports.getLikeCount = (postingId) => {
     const queryString = `
 	SELECT COUNT(*)
 		FROM likes
-		WHERE posting_id = $1
+		WHERE posting_id = $1;
 	`;
     return pool
-        .query(queryString, [id])
+        .query(queryString, [postingId])
         .then(resolve => {
-        return resolve.rows[0];
+        return resolve.rows[0].count;
     })
         .catch(error => console.log(error));
 };
@@ -244,18 +280,17 @@ exports.register = (userInfo) => {
         .catch(error => console.log(error));
 };
 exports.validateLogin = (email, password) => {
-    console.log('attemp login');
     const queryString = `
-	SELECT * from users WHERE email = $1 AND password = $2
-	`;
-    console.log(`
-	SELECT * from users WHERE email = ${email} AND password = ${password}
-	`);
+	SELECT * from users WHERE email = $1`;
     return pool
-        .query(queryString, [email, password])
+        .query(queryString, [email])
         .then(resolve => {
-        // console.log(resolve);
-        return resolve.rows[0];
+        const userObj = resolve.rows[0];
+        return bcrypt_1.default.compare(password, userObj.password).then(result => {
+            if (result === true) {
+                return userObj;
+            }
+        });
     })
         .catch(error => console.log(error));
 };
@@ -267,23 +302,44 @@ exports.getUsers = () => {
         .then(resolve => resolve.rows)
         .catch(error => console.log(error));
 };
-exports.getUserById = (id) => {
+exports.getUserById = (userId) => {
     return pool
         .query(`
   SELECT * FROM users
     WHERE id = $1
-  `, [id])
+  `, [userId])
         .then(resolve => resolve.rows[0])
         .catch(error => console.log(error));
 };
-exports.getPostingsByUserId = (option) => {
+exports.getPostingsByUserId = (userId) => {
     return pool
         .query(`
     SELECT * FROM postings
     WHERE owner_id = $1
-    `, [option])
+    `, [userId])
         .then(resolve => resolve.rows)
         .catch(error => console.log(error));
 };
 // exports = { getUsers };
 // module.exports = { getUsers, getPostingsByUsers };
+exports.getAllMessages = () => {
+    return pool
+        .query(`
+		SELECT *
+		FROM messages
+		;
+		`, [])
+        .then(resolve => resolve.rows)
+        .catch(error => console.log(error));
+};
+exports.getConvo = (sender_id, receiver_id) => {
+    return pool
+        .query(`
+		SELECT *
+		FROM messages
+		WHERE sender_id = $1 AND receiver_id = $2
+		;
+		`, [sender_id, receiver_id])
+        .then(resolve => resolve.rows)
+        .catch(error => console.log(error));
+};

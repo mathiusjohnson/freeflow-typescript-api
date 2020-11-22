@@ -13,9 +13,15 @@ module.exports = (queryFunctions) => {
             .then((resolve) => res.send(resolve))
             .catch((error) => console.log(error));
     });
+    router.get(`/`, (req, res) => {
+        queryFunctions
+            .getAllLikes()
+            .then((resolve) => res.send(resolve))
+            .catch((error) => console.log(error));
+    });
     router.post('/:id', (req, res) => {
         const postingId = Number(req.params.id);
-        const userId = req.body.userId; // ???
+        const userId = req.body.liker_id; // ???
         queryFunctions
             .addLike(postingId, userId)
             .then((resolve) => res.send(resolve))
